@@ -79,7 +79,7 @@ WSGI_APPLICATION = "authentication.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "Authentication",
+        "NAME": "Astra",
         "USER": "root",
         "PASSWORD": "root",
         "HOST": "db",

@@ -11,6 +11,17 @@ services:
     depends_on: 
       - db
 
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    expose:
+      - 8100
+    volumes:
+      - ./api:/app
+    depends_on: 
+      - db
+
   db:
     image: mysql:5.7.22
     restart: always
@@ -18,7 +29,7 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: Authentication
+      MYSQL_DATABASE: Astra
     volumes:
       - .dbdata:/var/lib/mysql
     expose:
