@@ -26,10 +26,10 @@ class BlogSerializer(serializers.ModelSerializer):
         return obj.likes.count()
 
     def get_catalog_name(self, obj, *args, **kwargs):
-        return obj.catalog.name
+        return obj.catalog.title
 
     def get_full_catalog_name(self, obj, *args, **kwargs):
-        return obj.catalog.full_catalog.name
+        return obj.catalog.full_catalog.title
 
     def update(self, instance, validated_data, *args, **kwargs):
         instance.name = validated_data.get("name", instance.name)

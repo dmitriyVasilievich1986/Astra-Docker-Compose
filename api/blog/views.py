@@ -39,17 +39,11 @@ class BlogViewSet(ModelViewSet):
 
     @action(
         detail=True,
-        methods=["POST", "GET"],
-        permission_classes=[permissions.IsAuthenticatedOrReadOnly],
+        methods=["POST"],
+        permission_classes=[permissions.IsAuthenticated],
     )
     def likes(self, request, pk=None, *args, **kwargs):
         blog = get_object_or_404(Blog, id=pk)
-        if request.method == "GET":
-            context = {
-                "likes": blog.likes.count(),
-                "is_liked": request.user in blog.likes.all(),
-            }
-            return Response(context)
         if request.user in blog.likes.all():
             blog.likes.remove(request.user)
         else:
