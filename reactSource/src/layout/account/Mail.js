@@ -29,7 +29,7 @@ class Mail extends Component {
         axios.put(`/api/blog/message/${e.target.id}/`, context, headers)
             .then(data => this.state.received_message[e.target.key] = data.data)
             .catch(err => console.log(err))
-        this.setState({ text: this.state.received_message[e.target.id].text })
+        this.setState({ text: this.state.received_message[e.target.key].text })
     }
     render() {
         return (
