@@ -16,6 +16,13 @@ class BlogViewSet(ModelViewSet):
     queryset = Blog.objects.all()
     permission_classes = [ReadOnlyOrAdmin]
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        response = serializer.data
+        response["is_liked"] = request.user in instance.likes
+        return Response(response)
+
     @action(detail=True, methods=["GET"])
     def blog_by_catalog(self, request, pk=None, *args, **kwargs):
         queryset = Blog.objects.filter(catalog=pk)
