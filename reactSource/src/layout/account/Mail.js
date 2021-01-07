@@ -27,11 +27,11 @@ class Mail extends Component {
             is_received: true,
         }
         axios.put(`/api/blog/message/${e.target.id}/`, context, headers)
-            .then(data => this.state.received_message[e.target.key] = data.data)
+            .then(data => this.state.received_message[e.target.name] = data.data)
             .catch(err => console.log(err))
         console.log(this.state.received_message);
-        console.log(e.target.key);
-        // this.setState({ text: this.state.received_message[e.target.key].text })
+        console.log(e.target.name);
+        this.setState({ text: this.state.received_message[e.target.name].text })
     }
     render() {
         return (
@@ -39,6 +39,7 @@ class Mail extends Component {
                 <ul className="list-group">
                     {this.state.received_message.map((m, i) => {
                         return <li
+                            name={i}
                             onClick={this.openMailHandler.bind(this)}
                             id={m.id}
                             className="list-group-item"
