@@ -30,8 +30,8 @@ class Mail extends Component {
             .then(data => this.state.received_message[e.target.name] = data.data)
             .catch(err => console.log(err))
         console.log(this.state.received_message);
-        console.log(e.target.name);
-        this.setState({ text: this.state.received_message[e.target.name].text })
+        console.log(e.target);
+        // this.setState({ text: this.state.received_message[e.target.name].text })
     }
     render() {
         return (
