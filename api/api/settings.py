@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "l$iikbd%&n)2_y_zy-v89sb8m8e@%_=6@=gb52pl5%q#10bb9t"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "comments",
     "account",
     "catalog",
+    "message",
     "knox",
     "blog",
 ]

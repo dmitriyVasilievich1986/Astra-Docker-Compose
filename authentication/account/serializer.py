@@ -16,10 +16,22 @@ class LoginSerializer(serializers.Serializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    message_count = serializers.SerializerMethodField("get_message_count")
+
     class Meta:
         model = Account
-        fields = "username", "email", "first_name", "last_name", "password"
+        fields = (
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "password",
+            "message_count",
+        )
         extra_kwargs = {"password": {"write_only": True}}
+
+    def get_message_count(self, obj, *args, **kwargs):
+        return obj.received_messages.filter(is_received=False).count()
 
     def create(self, validated_data, *args, **kwargs):
         user = Account.objects.create_user(**validated_data)

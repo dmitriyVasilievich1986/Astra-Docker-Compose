@@ -8,7 +8,11 @@ class Blog(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
     HTMLText = models.TextField(blank=True, null=True)
     catalog = models.ForeignKey(
-        Catalog, on_delete=models.CASCADE, blank=True, null=True
+        on_delete=models.CASCADE,
+        related_name="blogs",
+        to=Catalog,
+        blank=True,
+        null=True,
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
