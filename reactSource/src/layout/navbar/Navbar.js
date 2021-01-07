@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from "react-router-dom";
-import { setSidePanelStatus, setModalStatus, clearUser } from '../../actions/authActions'
+import { clearUser } from '../../actions/authActions'
+import { setSidePanelStatus, setModalStatus } from '../../actions/actions'
 import axios from 'axios'
 
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Panel from './Panel'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
 
