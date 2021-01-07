@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from "react-router-dom";
-import { setSidePanelStatus, setModalStatus, clearUser } from '../../actions/actions'
-import getHeadersWithCSRF from '../support/getHeadersWithCSRF'
+import { setSidePanelStatus, setModalStatus, clearUser } from '../../actions/authActions'
 import axios from 'axios'
 
 import IconButton from '@material-ui/core/IconButton';
@@ -10,6 +9,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Panel from './Panel'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Avatar from '@material-ui/core/Avatar';
+import Badge from '@material-ui/core/Badge';
+import MailIcon from '@material-ui/icons/Mail';
 
 function setStyleOnLink(active) {
     if (active)
@@ -45,6 +46,9 @@ function Navbar(props) {
                             <Link style={{ "color": "black", "cursor": "pointer" }} to='/registration'>Регистрация</Link>
                         </div> :
                         <div>
+                            <Badge badgeContent={this.state.user.message_count} color="primary">
+                                <MailIcon style={{ cursor: "pointer" }} />
+                            </Badge>
                             <Link to='/account' style={{ "color": "black" }}>
                                 {props.user.username}
                             </Link>

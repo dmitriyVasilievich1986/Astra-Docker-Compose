@@ -75,7 +75,6 @@ class Blog extends Component {
                 <Badge badgeContent={this.state.likesCount} color="primary">
                     <h5 className='mr-2'>Понравилось? Ставь:</h5>
                     {this.state.isLiked ? <FavoriteIcon onClick={this.likeClickHandler.bind(this)} style={{ color: "red", cursor: "pointer" }} /> : <FavoriteBorderIcon onClick={this.likeClickHandler.bind(this)} style={{ cursor: "pointer" }} />}
-
                 </Badge>
             </div>
         )
