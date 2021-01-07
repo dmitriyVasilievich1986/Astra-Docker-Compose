@@ -46,7 +46,7 @@ function Navbar(props) {
                             <Link style={{ "color": "black", "cursor": "pointer" }} to='/registration'>Регистрация</Link>
                         </div> :
                         <div>
-                            <Badge badgeContent={this.state.user.message_count} color="primary">
+                            <Badge badgeContent={props.user.message_count} color="primary">
                                 <MailIcon style={{ cursor: "pointer" }} />
                             </Badge>
                             <Link to='/account' style={{ "color": "black" }}>
