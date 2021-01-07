@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-
 import axios from 'axios'
-import getHeadersWithCSRF from '../support/getHeadersWithCSRF'
-import { changeUserData } from '../../actions/actions'
-import { connect } from 'react-redux'
+
+import { changeUserData } from '../../actions/authActions'
 import { withRouter, Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
@@ -22,14 +21,14 @@ class Registration extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            login: '',
-            loginError: "",
-            password: '',
-            passwordError: "",
-            password2: '',
             password2Error: "",
-            showPassword: false,
+            passwordError: "",
+            loginError: "",
+            password2: '',
+            password: '',
+            login: '',
             showPassword2: false,
+            showPassword: false,
         }
     }
     onChangeHandler(e) {
@@ -49,12 +48,13 @@ class Registration extends Component {
             this.setState({ password2Error: 'пароли не совпадают' })
             return
         }
+
         const context = {
             username: this.state.login,
             password: this.state.password,
         }
-        const headers = getHeadersWithCSRF()
-        axios.post('/api/auth/register', context, headers)
+
+        axios.post('/api/auth/register/', context)
             .then(data => {
                 this.props.changeUserData(data.data)
                 this.props.history.push('/')
@@ -80,7 +80,7 @@ class Registration extends Component {
                         variant="outlined"
                         helperText={this.state.loginError}
                     />
-                    <FormControl className="w-100 mt-4" variant="outlined">
+                    <FormControl className="w-100 mt-4" variant="outlined" key='1'>
                         <InputLabel error={this.state.passwordError != ''} htmlFor="outlined-adornment-password">Пароль *</InputLabel>
                         <OutlinedInput
                             name='password'
@@ -104,7 +104,7 @@ class Registration extends Component {
                         />
                         <FormHelperText style={{ 'color': "red" }} id="outlined-weight-helper-text">{this.state.passwordError}</FormHelperText>
                     </FormControl>
-                    <FormControl className="w-100 mt-4" variant="outlined">
+                    <FormControl className="w-100 mt-4" variant="outlined" key='2'>
                         <InputLabel error={this.state.password2Error != ''} htmlFor="outlined-adornment-password">Пароль *</InputLabel>
                         <OutlinedInput
                             name='password2'

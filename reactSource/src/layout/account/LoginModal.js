@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setModalStatus, changeUserData } from '../../actions/actions'
-import getHeadersWithCSRF from '../support/getHeadersWithCSRF'
+import { setModalStatus, changeUserData } from '../../actions/authActions'
 import axios from 'axios'
 
 import Dialog from '@material-ui/core/Dialog';
@@ -18,37 +17,36 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
+const emptyFieldError = 'поле не может быть пустым'
+
 class LoginModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            login: "",
-            password: "",
             showPassword: false,
             passwordError: "",
             loginError: "",
+            password: "",
+            login: "",
         }
     }
-    sendLoginData() {
-        if (this.state.login == '' && this.state.password == '') {
-            this.setState({
-                loginError: "поле не может быть пустым",
-                passwordError: "поле не может быть пустым"
-            })
-            return
-        } else if (this.state.login == '') {
-            this.setState({ loginError: "поле не может быть пустым" })
-            return
-        } else if (this.state.password == '') {
-            this.setState({ passwordError: "поле не может быть пустым" })
-            return
+    notEmptyHandler(target) {
+        if (this.state[target] == '') {
+            this.setState({ [`${target}Error`]: emptyFieldError })
+            return 1
         }
+        return 0
+    }
+    sendLoginData() {
+        if ((this.notEmptyHandler('login') + this.notEmptyHandler('password')) > 0)
+            return
+
         const context = {
             username: this.state.login,
             password: this.state.password,
         }
-        const headers = { headers: {} }
-        axios.post('/api/auth/login/', context, headers)
+
+        axios.post('/api/auth/login/', context)
             .then(data => {
                 this.props.changeUserData(data.data)
                 this.props.setModalStatus(false)
@@ -63,7 +61,6 @@ class LoginModal extends Component {
                     <TextField
                         error={this.state.loginError != ''}
                         fullWidth
-                        id="outlined-error-helper-text"
                         label="Имя пользователя *"
                         value={this.state.login}
                         onChange={e => this.setState({ login: e.target.value })}
@@ -74,7 +71,6 @@ class LoginModal extends Component {
                         <InputLabel error={this.state.passwordError != ''} htmlFor="outlined-adornment-password">Пароль *</InputLabel>
                         <OutlinedInput
                             error={this.state.passwordError != ''}
-                            id="outlined-adornment-password"
                             type={this.state.showPassword ? 'text' : 'password'}
                             value={this.state.password}
                             onChange={e => this.setState({ password: e.target.value })}

@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import page404 from '../support/page404'
 import { connect } from 'react-redux'
 import axios from 'axios'
-import getHeadersWithCSRF from '../support/getHeadersWithCSRF'
 
+import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
 
 class Test extends Component {
     constructor(props) {
@@ -20,21 +19,22 @@ class Test extends Component {
             fullCatalogSelectValue: '',
             catalogSelectValue: '',
             blogSelectValue: '',
-            name: '',
             title: '',
+            name: '',
+        }
+    }
+    getContext() {
+        return {
+            catalog: this.state.catalogSelectValue,
+            HTMLText: this.state.HTMLString,
+            title: this.state.title,
+            name: this.state.name,
         }
     }
     sendChanges() {
-        const context = {
-            HTMLText: this.state.HTMLString,
-            name: this.state.name,
-            title: this.state.title,
-            catalog: this.state.catalogSelectValue,
-        }
+        const context = this.getContext()
 
-        const headers = {
-            headers: {}
-        }
+        const headers = { headers: {} }
         if (this.props.token)
             headers.headers['Authorization'] = `Token ${this.props.token}`
 
@@ -47,52 +47,78 @@ class Test extends Component {
             .catch(err => console.log(err))
     }
     sendNewBlog() {
-        const context = {
-            HTMLText: this.state.HTMLString,
-            title: this.state.title,
-            name: this.state.name,
-            catalog: this.state.catalogSelectValue,
-        }
+        const context = this.getContext()
 
-        const headers = getHeadersWithCSRF()
+        const headers = { headers: {} }
         if (this.props.token)
             headers.headers['Authorization'] = `Token ${this.props.token}`
 
         axios.post(`/api/blog/blog/`, context, headers)
             .then(() => {
                 axios.get('/api/blog/blog/')
-                    .then(data => this.setState({ blogs: data.data, blogSelectValue: data.data[data.data.length - 1].id, HTMLString: data.data[data.data.length - 1].HTMLText, name: data.data[data.data.length - 1].name }))
+                    .then(data => this.setState({
+                        HTMLString: data.data[data.data.length - 1].HTMLText,
+                        blogSelectValue: data.data[data.data.length - 1].id,
+                        title: data.data[data.data.length - 1].title,
+                        name: data.data[data.data.length - 1].name,
+                        blogs: data.data,
+                    }))
                     .catch(err => console.log(err))
             })
             .catch(err => console.log(err))
     }
     deleteBlog() {
-        const headers = getHeadersWithCSRF()
+        const headers = { headers: {} }
         if (this.props.token)
             headers.headers['Authorization'] = `Token ${this.props.token}`
 
         axios.delete(`/api/blog/blog/${this.state.blogSelectValue}/`, headers)
             .then(() => {
                 axios.get('/api/blog/blog/')
-                    .then(data => this.setState({ blogs: data.data, blogSelectValue: data.data[0].id, HTMLString: data.data[0].HTMLText, name: data.data[0].name }))
+                    .then(data => this.setState({
+                        HTMLString: data.data[0].HTMLText,
+                        blogSelectValue: data.data[0].id,
+                        title: data.data[0].title,
+                        name: data.data[0].name,
+                        blogs: data.data,
+                    }))
                     .catch(err => console.log(err))
             })
             .catch(err => console.log(err))
     }
     componentDidMount() {
         axios.get('/api/blog/fullcatalog/')
-            .then(data => this.setState({ fullCatalog: data.data, fullCatalogSelectValue: data.data[0].id }))
+            .then(data => this.setState({
+                fullCatalogSelectValue: data.data[0].id,
+                fullCatalog: data.data,
+            }))
             .catch(err => console.log(err))
+
         axios.get('/api/blog/catalog/')
-            .then(data => this.setState({ catalog: data.data, catalogSelectValue: data.data[0].id }))
+            .then(data => this.setState({
+                catalogSelectValue: data.data[0].id,
+                catalog: data.data,
+            }))
             .catch(err => console.log(err))
+
         axios.get('/api/blog/blog/')
-            .then(data => this.setState({ blogs: data.data, blogSelectValue: data.data[0].id, HTMLString: data.data[0].HTMLText, name: data.data[0].name }))
+            .then(data => this.setState({
+                HTMLString: data.data[0].HTMLText,
+                blogSelectValue: data.data[0].id,
+                name: data.data[0].name,
+                blogs: data.data,
+            }))
             .catch(err => console.log(err))
     }
     onChangeBlogHandler(e) {
         const bl = this.state.blogs.filter(b => b.id == e.target.value)[0]
-        this.setState({ catalogSelectValue: bl.catalog, blogSelectValue: bl.id, HTMLString: bl.HTMLText, name: bl.name })
+        this.setState({
+            catalogSelectValue: bl.catalog,
+            HTMLString: bl.HTMLText,
+            blogSelectValue: bl.id,
+            title: bl.title,
+            name: bl.name,
+        })
     }
     onChangeHandler(e) {
         this.setState({ [e.target.name]: e.target.value })

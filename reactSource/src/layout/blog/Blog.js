@@ -67,7 +67,7 @@ class Blog extends Component {
                     <Link to='/'>Главная</Link>
                     <Link to={`/${this.props.match.params.catalogName}/`}>{this.state.fullCatalogName}</Link>
                     <Link to={`/${this.props.match.params.catalogName}/${this.props.match.params.blogName}/`}>{this.state.catalogName}</Link>
-                    <a style={{ color: "gray" }}>{this.state.name}</a>
+                    <a style={{ color: "gray" }}>{this.state.title}</a>
                 </Breadcrumbs>
                 <div style={{ marginTop: "4rem" }}></div>
                 <div dangerouslySetInnerHTML={{ __html: this.state.HTMLText }} />

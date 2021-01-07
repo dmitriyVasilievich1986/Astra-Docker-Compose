@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios'
 import getHeadersWithCSRF from '../support/getHeadersWithCSRF'
-import { updateUser } from '../../actions/actions'
+import { updateUser } from '../../actions/authActions'
 
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -32,11 +32,11 @@ class Account extends Component {
             email: this.state.email,
         }
 
-        const headers = getHeadersWithCSRF()
+        const headers = { headers: {} }
         if (this.props.token)
             headers.headers['Authorization'] = `Token ${this.props.token}`
 
-        axios.put('/api/auth/account', context, headers)
+        axios.put(`/api/auth/account/${this.props.user.id}/`, context, headers)
             .then(data => this.props.updateUser(data.data.user))
             .catch(err => console.log(err))
     }

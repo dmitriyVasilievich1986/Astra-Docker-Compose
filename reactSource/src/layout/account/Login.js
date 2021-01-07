@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import getCookie from '../support/csrf'
-import { changeUserData } from '../../actions/actions'
+import { changeUserData } from '../../actions/authActions'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -42,13 +41,7 @@ class Login extends Component {
             username: this.state.login,
             password: this.state.password,
         }
-        const headers = {
-            header: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken'),
-            }
-        }
-        axios.post('/api/auth/login', context, headers)
+        axios.post('/api/auth/login/', context)
             .then(data => {
                 this.props.changeUserData(data.data)
                 this.props.history.push('/')

@@ -6,7 +6,8 @@ import { Provider } from 'react-redux'
 import store from './store'
 import Test from './layout/support/Test'
 import PrivateRoute from './layout/support/PrivateRoute'
-import { getUser, getFullCatalog } from './actions/actions'
+import { getFullCatalog } from './actions/actions'
+import { getUser } from './actions/authActions'
 
 
 export default class App extends Component {
