@@ -67,7 +67,7 @@ class BlogViewSet(ModelViewSet):
     @action(detail=True, methods=["GET"])
     def get_names(self, request, pk=None, *args, **kwargs):
         blog = get_object_or_404(Blog, id=pk)
-        catalog = get_object_or_404(Catalog, blog=blog)
+        catalog = get_object_or_404(Catalog, blogs=blog)
         names_list = {
             "catalog_name": catalog.title,
             "full_catalog_name": catalog.full_catalog.title,

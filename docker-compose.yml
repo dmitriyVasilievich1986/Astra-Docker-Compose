@@ -34,17 +34,16 @@ services:
       - db
 
   db:
-    image: mysql:5.7.22
+    image: postgres
     restart: always
     environment: 
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: Astra
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: Astra
     volumes:
-      - .dbdata:/var/lib/mysql
+      - ./dbdata:/var/lib/postgresql/data
     expose:
-      - 3306
+      - 5432
 
   nginx:
     image: nginx

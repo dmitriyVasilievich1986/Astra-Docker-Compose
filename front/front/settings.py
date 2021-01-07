@@ -78,12 +78,12 @@ WSGI_APPLICATION = "front.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "Astra",
         "USER": "root",
         "PASSWORD": "root",
         "HOST": "db",
-        "PORT": "3306",
+        "PORT": "5432",
     }
 }
 
