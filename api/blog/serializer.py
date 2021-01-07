@@ -28,7 +28,7 @@ class BlogSerializer(serializers.ModelSerializer):
     def get_catalog_name(self, obj, *args, **kwargs):
         return obj.catalog.name
 
-    def get_catalog_name(self, obj, *args, **kwargs):
+    def get_full_catalog_name(self, obj, *args, **kwargs):
         return obj.catalog.full_catalog.name
 
     def update(self, instance, validated_data, *args, **kwargs):
