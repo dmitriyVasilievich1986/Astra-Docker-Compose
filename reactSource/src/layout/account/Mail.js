@@ -24,7 +24,7 @@ class Mail extends Component {
         if (this.props.token)
             headers.headers['Authorization'] = `Token ${this.props.token}`
         const context = {
-            is_received: True,
+            is_received: true,
         }
         axios.put(`/api/blog/message/${e.target.id}/`, context, headers)
             .then(data => this.state.received_message[e.target.key] = data.data)

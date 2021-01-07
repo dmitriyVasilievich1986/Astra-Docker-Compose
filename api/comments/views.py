@@ -15,7 +15,7 @@ class CommentsViewSet(viewsets.ModelViewSet):
     def update(self, request, pk=None, *args, **kwargs):
         instance = self.get_object()
         if instance.user != request.user:
-            raise serializers.ValidationError("no the same user")
+            raise serializers.ValidationError("not the same user")
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
