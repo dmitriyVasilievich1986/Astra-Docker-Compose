@@ -41,8 +41,7 @@ class Mail extends Component {
                             id={m.id}
                             className="list-group-item"
                             style={{ backgroundColor: m.is_received ? "white" : "gray", cursor: "pointer" }}
-                            key={i}>{
-                                m.title}</li>
+                            key={i}>{m.title}:{i}</li>
                     })}
                 </ul>
                 <div className="mt-4 border-top border-solid">
