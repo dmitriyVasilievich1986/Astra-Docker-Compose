@@ -34,8 +34,16 @@ class Mail extends Component {
     render() {
         return (
             <div className="container mt-4">
-                <ul class="list-group">
-                    {this.state.received_message.map((m, i) => <li id={m.id} class="list-group-item" style={{ backgroundColor: m.is_received ? "white" : "gray", cursor: "pointer" }} key={i}>{m.title}</li>)}
+                <ul className="list-group">
+                    {this.state.received_message.map((m, i) => {
+                        return <li
+                            onClick={this.openMailHandler.bind(this)}
+                            id={m.id}
+                            className="list-group-item"
+                            style={{ backgroundColor: m.is_received ? "white" : "gray", cursor: "pointer" }}
+                            key={i}>{
+                                m.title}</li>
+                    })}
                 </ul>
                 <div className="mt-4 border-top border-solid">
                     <p className="text-center">{this.state.text}</p>
