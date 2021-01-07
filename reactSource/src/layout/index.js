@@ -8,9 +8,11 @@ import FullCatalog from './catalogs/FullCatalog'
 import Page404 from './support/page404'
 import Catalog from './catalogs/Catalog'
 import Blog from './blog/Blog'
+import Mail from './account/Mail'
 
 export {
     Main,
+    Mail,
     Blog,
     Login,
     Navbar,

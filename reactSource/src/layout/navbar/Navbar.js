@@ -45,14 +45,16 @@ function Navbar(props) {
                             <a style={{ "color": "black", "cursor": "pointer" }} onClick={() => props.setModalStatus(true)}>Вход</a><a className="align-items-center ml-2 mr-2">/</a>
                             <Link style={{ "color": "black", "cursor": "pointer" }} to='/registration'>Регистрация</Link>
                         </div> :
-                        <div>
-                            <Badge badgeContent={props.user.message_count} color="primary">
-                                <MailIcon style={{ cursor: "pointer" }} />
-                            </Badge>
-                            <Link to='/account' style={{ "color": "black" }}>
+                        <div className="align-items-center">
+                            <Link to='/account' style={{ marginLeft: "1rem", "color": "black" }}>
                                 {props.user.username}
                             </Link>
-                            <ExitToAppIcon onClick={sendLogout} className="ml-2" style={{ cursor: 'pointer' }} />
+                            <Link to='/mail' style={{ marginLeft: "1rem", "color": "black" }}>
+                                <Badge badgeContent={props.user.message_count} color="primary">
+                                    <MailIcon style={{ cursor: "pointer" }} />
+                                </Badge>
+                            </Link>
+                            <ExitToAppIcon onClick={sendLogout} style={{ marginLeft: "1rem", cursor: 'pointer' }} />
                         </div>
                     }
                 </div >

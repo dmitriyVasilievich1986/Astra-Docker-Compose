@@ -3,8 +3,9 @@ from django.conf import settings
 
 
 class Message(models.Model):
-    text = models.TextField()
-    HTMLText = models.TextField()
+    title = models.CharField(max_length=100, blank=True, null=True)
+    text = models.TextField(blank=True, null=True)
+    HTMLText = models.TextField(blank=True, null=True)
     sender = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
