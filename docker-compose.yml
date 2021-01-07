@@ -4,6 +4,8 @@ services:
     build:
       context: ./authentication
       dockerfile: Dockerfile
+    env_file: 
+      - ./env_data/authentication.env
     expose:
       - 8000
     volumes:
@@ -15,6 +17,8 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
+    env_file: 
+      - ./env_data/api.env
     expose:
       - 8100
     volumes:
@@ -26,6 +30,8 @@ services:
     build:
       context: ./front
       dockerfile: Dockerfile
+    env_file: 
+      - ./env_data/front.env
     expose:
       - 8200
     volumes:
@@ -40,8 +46,6 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: Astra
-    volumes:
-      - ./dbdata:/var/lib/postgresql/data
     expose:
       - 5432
 
