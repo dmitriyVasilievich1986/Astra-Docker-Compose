@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setModalStatus, changeUserData } from '../../actions/authActions'
+import { setModalStatus } from '../../actions/actions'
+import { changeUserData } from '../../actions/authActions'
 import axios from 'axios'
 
 import Dialog from '@material-ui/core/Dialog';
