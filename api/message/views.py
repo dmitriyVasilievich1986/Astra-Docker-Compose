@@ -20,7 +20,10 @@ class MessageViewSet(viewsets.ModelViewSet):
         user = request.user
         queryset = user.received_messages.all()
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        response = serializer.data
+        for x in response:
+            x["sender"] = user.objects.get(pk=x["sender"])
+        return Response(response)
 
     def update(self, request, pk=None, *args, **kwargs):
         instance = self.get_object()

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
+import { getUser } from '../../actions/authActions'
 
 class Mail extends Component {
     constructor(props) {
@@ -27,7 +28,7 @@ class Mail extends Component {
             is_received: true,
         }
         axios.put(`/api/blog/message/${messageID}/`, context, headers)
-            .then(data => this.state.received_message[arrayIndex] = data.data)
+            .then(() => { this.componentDidMount(); this.props.getUser(); })
             .catch(err => console.log(err))
         this.setState({ text: this.state.received_message[arrayIndex].text })
     }
@@ -40,7 +41,7 @@ class Mail extends Component {
                             onClick={() => this.openMailHandler(m.id, i)}
                             className="list-group-item"
                             style={{ backgroundColor: m.is_received ? "white" : "gray", cursor: "pointer" }}
-                            key={i}>{m.title}</li>
+                            key={i}>{m.sender}{m.title}</li>
                     })}
                 </ul>
                 <div className="mt-4 border-top border-solid">
@@ -55,4 +56,4 @@ const mapStateToProps = state => ({
     token: state.auth.token,
 })
 
-export default connect(mapStateToProps, null)(Mail)
+export default connect(mapStateToProps, { getUser })(Mail)
