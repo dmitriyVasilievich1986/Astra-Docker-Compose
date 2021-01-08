@@ -11,7 +11,7 @@ class Mail extends Component {
             text: "",
         }
     }
-    getMessages() {
+    componentDidMount() {
         const headers = { headers: {} }
         if (this.props.token)
             headers.headers['Authorization'] = `Token ${this.props.token}`
@@ -20,8 +20,14 @@ class Mail extends Component {
             .then(data => this.setState({ received_message: data.data }))
             .catch(err => console.log(err))
     }
-    componentDidMount() {
-        this.getMessages()
+    getMessages() {
+        const headers = { headers: {} }
+        if (this.props.token)
+            headers.headers['Authorization'] = `Token ${this.props.token}`
+
+        axios.get('/api/blog/message/get_received/', headers)
+            .then(data => this.setState({ received_message: data.data }))
+            .catch(err => console.log(err))
     }
     openMailHandler(messageID, arrayIndex) {
         const headers = { headers: {} }
@@ -32,7 +38,7 @@ class Mail extends Component {
         }
         this.setState({ text: this.state.received_message[arrayIndex].text })
         axios.put(`/api/blog/message/${messageID}/`, context, headers)
-            .then(() => { this.getMessages(); this.props.getUser(); })
+            .then(() => { this.getMessages(); })
             .catch(err => console.log(err))
     }
     render() {
