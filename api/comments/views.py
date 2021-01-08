@@ -12,6 +12,13 @@ class CommentsViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Comments.objects.all()
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(user=request.user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, headers=headers)
+
     def update(self, request, pk=None, *args, **kwargs):
         instance = self.get_object()
         if instance.user != request.user:

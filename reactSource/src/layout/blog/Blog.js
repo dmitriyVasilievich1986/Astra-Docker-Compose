@@ -77,7 +77,7 @@ class Blog extends Component {
                     <h5 className='mr-2'>Понравилось? Ставь:</h5>
                     {this.state.isLiked ? <FavoriteIcon onClick={this.likeClickHandler.bind(this)} style={{ color: "red", cursor: "pointer" }} /> : <FavoriteBorderIcon onClick={this.likeClickHandler.bind(this)} style={{ cursor: "pointer" }} />}
                 </Badge>
-                <div className="form-group">
+                <div className="form-group mt-4 mb-4">
                     <textarea
                         value={this.state.commentText}
                         onChange={e => this.setState({ commentText: e.target.value })}
