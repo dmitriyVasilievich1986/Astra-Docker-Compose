@@ -1,10 +1,12 @@
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from .serializer import CommentsSerializer
 from api.support_class import ReadOnlyOrAdmin
 from .models import Comments
 from rest_framework import serializers
 from rest_framework.decorators import action
+from blog.models import Blog
 
 
 class CommentsViewSet(viewsets.ModelViewSet):

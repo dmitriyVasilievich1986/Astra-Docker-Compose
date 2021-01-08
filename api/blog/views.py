@@ -21,6 +21,7 @@ class BlogViewSet(ModelViewSet):
         serializer = self.get_serializer(instance)
         response = serializer.data
         response["is_liked"] = request.user in instance.likes.all()
+        response["comments"] = [x.text for x in instance.blog_comment.all()]
         return Response(response)
 
     @action(detail=True, methods=["GET"])

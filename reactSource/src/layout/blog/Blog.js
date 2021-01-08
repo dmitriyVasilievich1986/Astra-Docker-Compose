@@ -24,6 +24,7 @@ class Blog extends Component {
             isLoading: true,
             isLiked: true,
             likesCount: 0,
+            comments: [],
         }
     }
     componentDidMount() {
@@ -33,6 +34,7 @@ class Blog extends Component {
                 catalogName: data.data.catalog_name,
                 likesCount: data.data.likes_count,
                 HTMLText: data.data.HTMLText,
+                comments: data.data.comments,
                 isLiked: data.data.is_liked,
                 title: data.data.title,
                 name: data.data.name,
@@ -83,6 +85,11 @@ class Blog extends Component {
                         onChange={e => this.setState({ commentText: e.target.value })}
                         className="form-control" />
                     <button className='btn btn-primary btn-sm'>Оставить свой комментарий</button>
+                </div>
+                <div className="mt-4">
+                    <ul class="list-group">
+                        {this.state.comments.map((c, i) => <li key={i} class="list-group-item">{c}</li>)}
+                    </ul>
                 </div>
             </div>
         )
