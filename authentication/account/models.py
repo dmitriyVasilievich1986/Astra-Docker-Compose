@@ -11,7 +11,6 @@ class Account(AbstractUser):
     def create_user(self, email, password, *args, **kwargs):
         email = self.normalize_email(email)
         self.__init__(email=email, **kwargs)
-        message = Message.objects.get(pk=1)
         self.received_messages.add(message)
         self.set_password(password)
         self.save()

@@ -57,9 +57,8 @@ class Mail extends Component {
                             style={{ backgroundColor: m.is_received ? "white" : "gray", cursor: "pointer" }}
                             key={i}>
                             <div className="row justify-content-between">
-                                {m.sender_name}
-                                {m.title}
-                                {Date.parse(m.created_at)}
+                                <p>{m.sender_name}</p>
+                                <p>{m.title}</p>
                             </div>
                         </li>
                     })}

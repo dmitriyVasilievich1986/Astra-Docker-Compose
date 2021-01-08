@@ -2,6 +2,7 @@ from .models import Account
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.conf import settings
+from message.models import Message
 
 
 class LoginSerializer(serializers.Serializer):
@@ -35,6 +36,8 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data, *args, **kwargs):
         user = Account.objects.create_user(**validated_data)
+        user.received_messages.add(Message.objects.first())
+        user.save()
         return user
 
     def update(self, instance, validated_data, *args, **kwargs):
