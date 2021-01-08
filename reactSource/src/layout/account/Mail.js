@@ -38,7 +38,7 @@ class Mail extends Component {
         }
         this.setState({ text: this.state.received_message[arrayIndex].text })
         axios.put(`/api/blog/message/${messageID}/`, context, headers)
-            .then(() => { this.getMessages(); })
+            .then(() => { this.getMessages(); this.props.getUser() })
             .catch(err => console.log(err))
     }
     render() {
@@ -48,12 +48,14 @@ class Mail extends Component {
                     {this.state.received_message.map((m, i) => {
                         return <li
                             onClick={() => this.openMailHandler(m.id, i)}
-                            className="list-group-item justify-content-between"
+                            className="list-group-item"
                             style={{ backgroundColor: m.is_received ? "white" : "gray", cursor: "pointer" }}
                             key={i}>
-                            <p>{m.sender_name}</p>
-                            <p>{m.title}</p>
-                            <p>{Date.parse(m.created_at)}</p>
+                            <div className="row justify-content-between">
+                                {m.sender_name}
+                                {m.title}
+                                {Date.parse(m.created_at)}
+                            </div>
                         </li>
                     })}
                 </ul>
