@@ -17,6 +17,7 @@ class Blog extends Component {
         this.state = {
             fullCatalogName: '',
             catalogName: '',
+            commentText: '',
             HTMLText: '',
             title: '',
             name: '',
@@ -76,6 +77,13 @@ class Blog extends Component {
                     <h5 className='mr-2'>Понравилось? Ставь:</h5>
                     {this.state.isLiked ? <FavoriteIcon onClick={this.likeClickHandler.bind(this)} style={{ color: "red", cursor: "pointer" }} /> : <FavoriteBorderIcon onClick={this.likeClickHandler.bind(this)} style={{ cursor: "pointer" }} />}
                 </Badge>
+                <div className="form-group">
+                    <textarea
+                        value={this.state.commentText}
+                        onChange={e => this.setState({ commentText: e.target.value })}
+                        className="form-control" />
+                    <button className='btn btn-primary btn-sm'>Оставить свой комментарий</button>
+                </div>
             </div>
         )
     }
