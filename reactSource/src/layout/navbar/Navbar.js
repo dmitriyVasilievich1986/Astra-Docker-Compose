@@ -49,13 +49,13 @@ function Navbar(props) {
                             <Link style={{ ...headersStyleColor, "cursor": "pointer" }} to='/registration'>Регистрация</Link>
                         </div> :
                         <div className="align-items-center">
+                            <Link to='/account' style={{ ...headersStyleColor, marginLeft: "1rem" }}>
+                                {props.user.username}
+                            </Link>
                             <Link to='/mail' style={{ ...headersStyleColor, marginLeft: "1rem" }}>
                                 <Badge badgeContent={props.user.message_count} color="error">
                                     <MailIcon style={{ cursor: "pointer" }} />
                                 </Badge>
-                            </Link>
-                            <Link to='/account' style={{ ...headersStyleColor, marginLeft: "1rem" }}>
-                                {props.user.username}
                             </Link>
                             <ExitToAppIcon onClick={sendLogout} style={{ ...headersStyleColor, marginLeft: "1rem", cursor: 'pointer' }} />
                         </div>
