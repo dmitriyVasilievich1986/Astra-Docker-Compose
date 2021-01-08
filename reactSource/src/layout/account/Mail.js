@@ -39,9 +39,9 @@ class Mail extends Component {
                     {this.state.received_message.map((m, i) => {
                         return <li
                             onClick={() => this.openMailHandler(m.id, i)}
-                            className="list-group-item"
+                            className="list-group-item justify-content-between"
                             style={{ backgroundColor: m.is_received ? "white" : "gray", cursor: "pointer" }}
-                            key={i}>{m.sender}{m.title}</li>
+                            key={i}>{m.sender}{m.title}{m.created_at}</li>
                     })}
                 </ul>
                 <div className="mt-4 border-top border-solid">

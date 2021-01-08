@@ -7,7 +7,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ["id", "title", "text", "HTMLText", "sender_name"]
+        fields = ["id", "title", "text", "HTMLText", "sender_name", "created_at"]
 
     def get_sender_name(self, obj, *args, **kwargs):
         return obj.sender.username
