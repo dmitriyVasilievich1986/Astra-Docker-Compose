@@ -64,7 +64,7 @@ class Mail extends Component {
                     })}
                 </ul>
                 <div className="mt-4 border-top border-solid">
-                    <p className="text-center">{this.state.text}</p>
+                    <p className="text-start mt-4">{this.state.text}</p>
                 </div>
             </div>
         )
