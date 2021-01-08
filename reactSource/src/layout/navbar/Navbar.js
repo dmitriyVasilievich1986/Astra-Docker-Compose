@@ -12,11 +12,11 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
 
-const headersStyleColor = { "color": "lightgray" }
+const headersStyleColor = { "color": "#ffffff" }
 
 function setStyleOnLink(active) {
     if (active)
-        return { "color": "black" }
+        return { "color": "lightgray" }
     return headersStyleColor
 }
 
