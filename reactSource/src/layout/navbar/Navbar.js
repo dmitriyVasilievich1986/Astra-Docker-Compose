@@ -12,10 +12,12 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
 
+const headersStyleColor = { "color": "lightgray" }
+
 function setStyleOnLink(active) {
     if (active)
         return { "color": "black" }
-    return { "color": "gray" }
+    return headersStyleColor
 }
 
 function Navbar(props) {
@@ -30,11 +32,11 @@ function Navbar(props) {
     return (
         <div>
             <nav
-                className="navbar navbar-light bg-light">
+                className="navbar navbar-light" style={{ backgroundColor: "#0057ff" }}>
                 <div className='container justify-content-between'>
                     <div>
                         <IconButton
-                            style={{ "outline": "none" }}
+                            style={{ ...headersStyleColor, outline: "none" }}
                             onClick={() => props.setSidePanelStatus(!props.sidePanelOpen)}>
                             <MenuIcon />
                         </IconButton>
@@ -42,19 +44,20 @@ function Navbar(props) {
                     </div>
                     {!props.isAuthenticated ?
                         <div className='row align-items-center'>
-                            <a style={{ "color": "black", "cursor": "pointer" }} onClick={() => props.setModalStatus(true)}>Вход</a><a className="align-items-center ml-2 mr-2">/</a>
-                            <Link style={{ "color": "black", "cursor": "pointer" }} to='/registration'>Регистрация</Link>
+                            <a style={{ ...headersStyleColor, cursor: "pointer" }} onClick={() => props.setModalStatus(true)}>Вход</a>
+                            <a style={headersStyleColor} className="align-items-center ml-2 mr-2">/</a>
+                            <Link style={{ ...headersStyleColor, "cursor": "pointer" }} to='/registration'>Регистрация</Link>
                         </div> :
                         <div className="align-items-center">
-                            <Link to='/account' style={{ marginLeft: "1rem", "color": "black" }}>
-                                {props.user.username}
-                            </Link>
-                            <Link to='/mail' style={{ marginLeft: "1rem", "color": "black" }}>
-                                <Badge badgeContent={props.user.message_count} color="primary">
+                            <Link to='/mail' style={{ ...headersStyleColor, marginLeft: "1rem" }}>
+                                <Badge badgeContent={props.user.message_count} color="error">
                                     <MailIcon style={{ cursor: "pointer" }} />
                                 </Badge>
                             </Link>
-                            <ExitToAppIcon onClick={sendLogout} style={{ marginLeft: "1rem", cursor: 'pointer' }} />
+                            <Link to='/account' style={{ ...headersStyleColor, marginLeft: "1rem" }}>
+                                {props.user.username}
+                            </Link>
+                            <ExitToAppIcon onClick={sendLogout} style={{ ...headersStyleColor, marginLeft: "1rem", cursor: 'pointer' }} />
                         </div>
                     }
                 </div >
