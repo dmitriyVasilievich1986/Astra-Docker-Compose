@@ -13,8 +13,9 @@ class CommentsViewSet(viewsets.ModelViewSet):
     queryset = Comments.objects.all()
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.user = request.user
+        data = request.data
+        data["user"] = request.user
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
