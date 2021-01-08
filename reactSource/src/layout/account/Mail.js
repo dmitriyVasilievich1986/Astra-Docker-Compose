@@ -56,7 +56,7 @@ class Mail extends Component {
                             className="list-group-item"
                             style={{ backgroundColor: m.is_received ? "white" : "gray", cursor: "pointer" }}
                             key={i}>
-                            <div className="row justify-content-between">
+                            <div className="row pl-2 pr-2 justify-content-between">
                                 <p>{m.sender_name}</p>
                                 <p>{m.title}</p>
                             </div>
