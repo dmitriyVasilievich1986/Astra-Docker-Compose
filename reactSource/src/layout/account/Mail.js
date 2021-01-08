@@ -19,19 +19,17 @@ class Mail extends Component {
             .then(data => this.setState({ received_message: data.data }))
             .catch(err => console.log(err))
     }
-    openMailHandler(e) {
+    openMailHandler(messageID, arrayIndex) {
         const headers = { headers: {} }
         if (this.props.token)
             headers.headers['Authorization'] = `Token ${this.props.token}`
         const context = {
             is_received: true,
         }
-        axios.put(`/api/blog/message/${e.target.id}/`, context, headers)
-            .then(data => this.state.received_message[e.target.name] = data.data)
+        axios.put(`/api/blog/message/${messageID}/`, context, headers)
+            .then(data => this.state.received_message[arrayIndex] = data.data)
             .catch(err => console.log(err))
-        console.log(this.state.received_message);
-        console.log(e.target);
-        // this.setState({ text: this.state.received_message[e.target.name].text })
+        this.setState({ text: this.state.received_message[arrayIndex].text })
     }
     render() {
         return (
@@ -39,12 +37,10 @@ class Mail extends Component {
                 <ul className="list-group">
                     {this.state.received_message.map((m, i) => {
                         return <li
-                            name={i}
-                            onClick={this.openMailHandler.bind(this)}
-                            id={m.id}
+                            onClick={() => this.openMailHandler(m.id, i).bind(this)}
                             className="list-group-item"
                             style={{ backgroundColor: m.is_received ? "white" : "gray", cursor: "pointer" }}
-                            key={i}>{m.title}:{i}</li>
+                            key={i}>{m.title}</li>
                     })}
                 </ul>
                 <div className="mt-4 border-top border-solid">
