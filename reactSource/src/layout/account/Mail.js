@@ -50,7 +50,11 @@ class Mail extends Component {
                             onClick={() => this.openMailHandler(m.id, i)}
                             className="list-group-item justify-content-between"
                             style={{ backgroundColor: m.is_received ? "white" : "gray", cursor: "pointer" }}
-                            key={i}>{m.sender_name}{m.title}{m.created_at}</li>
+                            key={i}>
+                            <p>{m.sender_name}</p>
+                            <p>{m.title}</p>
+                            <p>{Date.parse(m.created_at)}</p>
+                        </li>
                     })}
                 </ul>
                 <div className="mt-4 border-top border-solid">
