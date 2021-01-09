@@ -42,7 +42,7 @@ function Navbar(props) {
                         </IconButton>
                         <Link className='ml-2' to='/' style={setStyleOnLink(props.location.pathname == "/")}>Главная</Link>
                     </div>
-                    {!props.isAuthenticated ?
+                    {props.isAuthenticated ?
                         <div className='row align-items-center'>
                             <a style={{ ...headersStyleColor, cursor: "pointer" }} onClick={() => props.setModalStatus(true)}>Вход</a>
                             <a style={headersStyleColor} className="align-items-center ml-2 mr-2">/</a>

@@ -29,7 +29,7 @@ export const getUser = () => (dispatch, getState,) => {
     if (token)
         context.headers['Authorization'] = `Token ${token}`
 
-    axios.get('/api/auth/account/', context)
+    axios.get('http://192.168.1.105/api/auth/account/', context)
         .then(data => {
             dispatch({
                 type: ACTIONTYPES.GET_USER,
