@@ -21,6 +21,19 @@ class Comments(models.Model):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name="answers",
+        related_name="child",
     )
-    text = models.TextField()
+    text = models.TextField(blank=True, null=True)
+
+    @property
+    def get_username(self):
+        return self.user.username
+
+    @property
+    def get_child(self):
+        if self.child.all().count() == 0:
+            return {"user": self.user.username, "text": self.text}
+        output = {"user": self.user.username, "text": self.text, "child": list()}
+        for child in self.child.all():
+            output["child"].append(child.get_child)
+        return output

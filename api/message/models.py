@@ -18,16 +18,5 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_received = models.BooleanField(default=False)
 
-    def update(self, instance, validated_data, *args, **kwargs):
-        instance.text = validated_data.get("text", instance.text)
-        instance.title = validated_data.get("title", instance.title)
-        instance.receiver = validated_data.get("receiver", instance.receiver)
-        instance.HTMLText = validated_data.get("HTMLText", instance.HTMLText)
-        instance.sender = instance.sender
-        instance.save()
-        return instance
-
-    @property
-    def get_unreaded_messages_count(self):
-        user = self.receiver
-        return len(user.received_messages.all())
+    def get_sender_name(self):
+        return self.sender.username

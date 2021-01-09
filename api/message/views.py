@@ -1,9 +1,7 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, response, decorators
 from .serializer import MessageSerializer
 from .models import Message
 from django.db.models import Q
-from rest_framework.decorators import action
-from rest_framework.response import Response
 
 
 class MessageViewSet(viewsets.ModelViewSet):
@@ -13,18 +11,19 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        if self.request.user.is_superuser:
+            return Message.objects.all()
         return Message.objects.filter(Q(sender=user) | Q(receiver=user))
-
-    @action(detail=False, methods=["GET"])
-    def get_received(self, request, *args, **kwargs):
-        user = request.user
-        queryset = user.received_messages.all()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
 
     def update(self, request, pk=None, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        return Response(serializer.data)
+        return response.Response(serializer.data)
+
+    @decorators.action(detail=False, methods=["GET"])
+    def get_received(self, request, *args, **kwargs):
+        queryset = request.user.received_messages.all()
+        serializer = self.get_serializer(queryset, many=True)
+        return response.Response(serializer.data)

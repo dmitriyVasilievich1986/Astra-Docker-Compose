@@ -1,11 +1,5 @@
-from django.shortcuts import get_object_or_404
-
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import viewsets
-
+from rest_framework import viewsets, response
 from api.support_class import ReadOnlyOrAdmin
-from full_catalog.models import FullCatalog
 from .serializer import CatalogSerializer
 from .models import Catalog
 
@@ -15,17 +9,17 @@ class CatalogViewSet(viewsets.ModelViewSet):
     queryset = Catalog.objects.all()
     permission_classes = [ReadOnlyOrAdmin]
 
-    @action(detail=True, methods=["GET"])
-    def catalog_by_id(self, request, pk=None, *args, **kwargs):
-        full_catalog = get_object_or_404(FullCatalog, name=pk)
-        queryset = Catalog.objects.filter(full_catalog=full_catalog)
-        names_list = {
-            "catalog": [{"name": x.name, "title": x.title} for x in queryset],
-            "full_catalog_name": queryset[0].full_catalog.title,
-        }
-        return Response(names_list)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        context = serializer.data
+        context["get_child"] = instance.get_child
+        context["get_parent"] = instance.get_parent
+        return response.Response(context)
 
-    @action(detail=False, methods=["GET"])
-    def names_only(self, request, *args, **kwargs):
-        queryset = Catalog.objects.values_list("name", flat=True)
-        return Response(queryset)
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return response.Response(serializer.data)

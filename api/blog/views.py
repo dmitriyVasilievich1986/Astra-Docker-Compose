@@ -1,17 +1,10 @@
-from django.shortcuts import get_object_or_404
-
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from rest_framework import permissions
-
+from rest_framework import viewsets, response, decorators, permissions
 from api.support_class import ReadOnlyOrAdmin
 from .serializer import BlogSerializer
-from catalog.models import Catalog
 from .models import Blog
 
 
-class BlogViewSet(ModelViewSet):
+class BlogViewSet(viewsets.ModelViewSet):
     serializer_class = BlogSerializer
     queryset = Blog.objects.all()
     permission_classes = [ReadOnlyOrAdmin]
@@ -19,59 +12,28 @@ class BlogViewSet(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        response = serializer.data
-        response["is_liked"] = request.user in instance.likes.all()
-        response["comments"] = [x.text for x in instance.comments.all()]
-        return Response(response)
-
-    @action(detail=True, methods=["GET"])
-    def blog_by_catalog(self, request, pk=None, *args, **kwargs):
-        queryset = Blog.objects.filter(catalog=pk)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-    @action(detail=True, methods=["GET"])
-    def get_blog_info(self, request, pk, *args, **kwargs):
-        blog = get_object_or_404(Blog, pk=pk)
-        serializer = self.get_serializer(blog, many=False)
         context = serializer.data
-        context["is_liked"] = request.user in blog.likes.all()
-        return Response(context)
+        context["is_liked"] = request.user in instance.likes.all()
+        context["get_comments"] = instance.get_comments
+        context["get_parent"] = instance.get_parent
+        return response.Response(context)
 
-    @action(
+    @decorators.action(
         detail=True,
         methods=["POST"],
         permission_classes=[permissions.IsAuthenticated],
     )
     def likes(self, request, pk=None, *args, **kwargs):
-        blog = get_object_or_404(Blog, id=pk)
-        if request.user in blog.likes.all():
-            blog.likes.remove(request.user)
+        instance = self.get_object()
+
+        is_liked = request.user in instance.likes.all()
+        if is_liked:
+            instance.likes.remove(request.user)
         else:
-            blog.likes.add(request.user)
+            instance.likes.add(request.user)
+
         context = {
-            "likes": blog.likes.count(),
-            "is_liked": request.user in blog.likes.all(),
+            "likes": instance.get_likes_count,
+            "is_liked": not is_liked,
         }
-        return Response(context)
-
-    @action(detail=True, methods=["GET"])
-    def blog_by_id(self, request, pk=None, *args, **kwargs):
-        catalog = get_object_or_404(Catalog, name=pk)
-        queryset = Blog.objects.filter(catalog=catalog)
-        names_list = {
-            "blogs": [{"name": x.name, "id": x.id, "title": x.title} for x in queryset],
-            "catalog_name": catalog.title,
-            "full_catalog_name": catalog.full_catalog.title,
-        }
-        return Response(names_list)
-
-    @action(detail=True, methods=["GET"])
-    def get_names(self, request, pk=None, *args, **kwargs):
-        blog = get_object_or_404(Blog, id=pk)
-        catalog = get_object_or_404(Catalog, blogs=blog)
-        names_list = {
-            "catalog_name": catalog.title,
-            "full_catalog_name": catalog.full_catalog.title,
-        }
-        return Response(names_list)
+        return response.Response(context)
