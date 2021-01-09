@@ -1,7 +1,8 @@
-from rest_framework import viewsets, response
+from rest_framework import viewsets, response, decorators
 from api.support_class import ReadOnlyOrAdmin
 from .serializer import CatalogSerializer
 from .models import Catalog
+from django.shortcuts import get_object_or_404
 
 
 class CatalogViewSet(viewsets.ModelViewSet):
@@ -22,4 +23,13 @@ class CatalogViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+        return response.Response(serializer.data)
+
+    @decorators.action(
+        detail=True,
+        methods=["GET"],
+    )
+    def get_by_name(self, request, pk=None, *args, **kwargs):
+        instance = get_object_or_404(klass=Catalog, pk=pk)
+        serializer = self.get_serializer(instance)
         return response.Response(serializer.data)

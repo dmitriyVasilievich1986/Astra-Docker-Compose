@@ -17,22 +17,18 @@ class LoginSerializer(serializers.Serializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
-    message_count = serializers.SerializerMethodField("get_message_count")
-
     class Meta:
         model = Account
         fields = (
-            "username",
-            "email",
+            "get_message_count",
             "first_name",
             "last_name",
+            "username",
             "password",
-            "message_count",
+            "email",
         )
         extra_kwargs = {"password": {"write_only": True}}
-
-    def get_message_count(self, obj, *args, **kwargs):
-        return obj.received_messages.filter(is_received=False).count()
+        read_only_fields = ("get_message_count",)
 
     def create(self, validated_data, *args, **kwargs):
         user = Account.objects.create_user(**validated_data)
@@ -41,9 +37,9 @@ class AccountSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data, *args, **kwargs):
-        instance.email = validated_data.get("email", instance.email)
-        instance.username = validated_data.get("username", instance.username)
         instance.first_name = validated_data.get("first_name", instance.first_name)
         instance.last_name = validated_data.get("last_name", instance.last_name)
+        instance.username = validated_data.get("username", instance.username)
+        instance.email = validated_data.get("email", instance.email)
         instance.save()
         return instance

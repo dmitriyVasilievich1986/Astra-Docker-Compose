@@ -27,3 +27,7 @@ class Account(AbstractUser):
         if kwargs.get("is_superuser") is not True:
             raise ValueError(_("Superuser must have is_superuser=True."))
         return self.create_user(email, password, **kwargs)
+
+    @property
+    def get_message_count(self):
+        return self.received_messages.filter(is_received=False).count()

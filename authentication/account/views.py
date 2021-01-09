@@ -2,8 +2,7 @@ from django.shortcuts import render
 from rest_framework.generics import GenericAPIView
 from .serializer import LoginSerializer, AccountSerializer
 from knox.models import AuthToken
-from rest_framework.response import Response
-from rest_framework import permissions
+from rest_framework import permissions, response, serializers
 
 
 class LoginViewSet(GenericAPIView):
@@ -18,7 +17,7 @@ class LoginViewSet(GenericAPIView):
             "user": AccountSerializer(user).data,
             "token": token[1],
         }
-        return Response(context)
+        return response.Response(context)
 
 
 class RegisterViewSet(GenericAPIView):
@@ -33,18 +32,28 @@ class RegisterViewSet(GenericAPIView):
             "user": serializer.data,
             "token": token[1],
         }
-        return Response(context)
+        return response.Response(context)
 
 
 class AccountViewSet(GenericAPIView):
     serializer_class = AccountSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request, *args, **kwargs):
-        return Response({"user": self.get_serializer(request.user).data})
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance != request.user and not request.user.is_superuser:
+            raise serializers.ValidationError("У вас нет прав на это действие")
+
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return response.Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
         serializer = self.get_serializer(request.user, data=request.data, partial=True)
-        serializer.is_valid()
-        serializer.save()
-        return Response({"user": serializer.data})
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return response.Response(serializer.data)
+
+    def get(self, request, *args, **kwargs):
+        return response.Response({"user": self.get_serializer(request.user).data})
