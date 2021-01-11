@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function BlogMain(props) {
-    const headers = props.HTMLText.match(/<h4.*?h4>/g).map(s => s.replace(/<.*?>/g, ""))
+    const headers = props.HTMLText.match(/<h4.*?h4>/g) ? props.HTMLText.match(/<h4.*?h4>/g).map(s => s.replace(/<.*?>/g, "")) : []
     return (
         <div className="row">
             <div className="col-lg-2">
