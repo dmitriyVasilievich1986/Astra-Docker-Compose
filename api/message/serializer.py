@@ -6,19 +6,30 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = [
-            "text",
+            "id",
             "title",
+            "sender",
+            "receiver",
             "HTMLText",
             "created_at",
             "is_received",
             "get_sender_name",
+            "get_unreaded_messages_count",
         ]
-        read_only_fields = "get_sender_name", "is_received", "created_at"
+        read_only_fields = (
+            "id",
+            "get_sender_name",
+            "created_at",
+            "get_unreaded_messages_count",
+        )
+        extra_kwargs = {
+            "sender": {"write_only": True},
+            "receiver": {"write_only": True},
+        }
 
     def update(self, instance, validated_data, *args, **kwargs):
-        instance.receiver = validated_data.get("receiver", instance.receiver)
+        instance.is_received = validated_data.get("is_received", instance.is_received)
         instance.HTMLText = validated_data.get("HTMLText", instance.HTMLText)
         instance.title = validated_data.get("title", instance.title)
-        instance.text = validated_data.get("text", instance.text)
         instance.save()
         return instance

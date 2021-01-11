@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions, response, decorators
 from .serializer import MessageSerializer
 from .models import Message
 from django.db.models import Q
+from account.models import Account
 
 
 class MessageViewSet(viewsets.ModelViewSet):

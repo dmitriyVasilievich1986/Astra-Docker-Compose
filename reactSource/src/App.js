@@ -10,7 +10,6 @@ import { getUser } from './actions/authActions'
 
 import {
     Registration,
-    FullCatalog,
     LoginModal,
     Page404,
     Catalog,
@@ -42,9 +41,8 @@ export default class App extends Component {
                             <Route exact path='/write' component={Test} />
                             <PrivateRoute exact path='/account' component={Account} />
                             <PrivateRoute exact path='/mail' component={Mail} />
-                            <Route exact path='/:catalogName' component={FullCatalog} />
-                            <Route exact path='/:catalogName/:blogName' component={Catalog} />
-                            <Route exact path='/:catalogName/:blogName/:blogID' component={Blog} />
+                            <Route exact path='/catalog/:catalogName' component={Catalog} />
+                            <Route exact path='/blog/:blogName' component={Blog} />
                             <Page404 />
                         </Switch>
                     </Provider>

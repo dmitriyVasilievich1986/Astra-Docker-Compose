@@ -8,10 +8,15 @@ class Account(AbstractUser):
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["password"]
 
-    def create_user(self, email, password, *args, **kwargs):
-        email = self.normalize_email(email)
+    def create_user(self, password, email="", *args, **kwargs):
+        from message.models import Message
+
+        message = Message(
+            HTMLText="hello", title="hello", sender=self.__class__.objects.first()
+        )
+        message.save()
         self.__init__(email=email, **kwargs)
-        self.received_messages.add(message)
+        self.received_messages.add(message.id)
         self.set_password(password)
         self.save()
 

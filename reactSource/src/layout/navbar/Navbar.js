@@ -42,9 +42,9 @@ function Navbar(props) {
                         </IconButton>
                         <Link className='ml-2' to='/' style={setStyleOnLink(props.location.pathname == "/")}>Главная</Link>
                     </div>
-                    {props.isAuthenticated ?
+                    {!props.isAuthenticated ?
                         <div className='row align-items-center'>
-                            <a style={{ ...headersStyleColor, cursor: "pointer" }} onClick={() => props.setModalStatus(true)}>Вход</a>
+                            <Link style={{ ...headersStyleColor, cursor: "pointer" }} to='/' onClick={e => { e.preventDefault(); props.setModalStatus(true); }}>Вход</Link>
                             <a style={headersStyleColor} className="align-items-center ml-2 mr-2">/</a>
                             <Link style={{ ...headersStyleColor, "cursor": "pointer" }} to='/registration'>Регистрация</Link>
                         </div> :
@@ -53,7 +53,7 @@ function Navbar(props) {
                                 {props.user.username}
                             </Link>
                             <Link to='/mail' style={{ ...headersStyleColor, marginLeft: "1rem" }}>
-                                <Badge badgeContent={props.user.message_count} color="error">
+                                <Badge badgeContent={props.user.get_message_count} color="error">
                                     <MailIcon style={{ cursor: "pointer" }} />
                                 </Badge>
                             </Link>

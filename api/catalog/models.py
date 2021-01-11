@@ -3,7 +3,7 @@ from blog.models import Blog
 
 
 class Catalog(models.Model):
-    name = models.CharField(max_length=150, unique=True)
+    name = models.CharField(max_length=150, unique=True, blank=True)
     title = models.CharField(max_length=150, blank=True, null=True)
     parent = models.ForeignKey(
         to="self",
@@ -37,9 +37,11 @@ class Catalog(models.Model):
     def get_parent(self):
         if self.parent is None:
             return {"name": self.name, "title": self.title}
-        output = {
-            "name": self.name,
-            "title": self.title,
-            "parent": self.parent.get_parent,
-        }
+        output = [
+            {
+                "name": self.name,
+                "title": self.title,
+            }
+        ]
+        output.append(self.parent.get_parent)
         return output

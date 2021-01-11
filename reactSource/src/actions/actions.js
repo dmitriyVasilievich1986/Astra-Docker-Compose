@@ -16,14 +16,19 @@ export const setModalStatus = modalPanelStatus => dispatch => {
 }
 
 export const getFullCatalog = () => dispatch => {
-    axios.get('/api/blog/fullcatalog/names_only/')
+    axios.get('/api/blog/catalog/1/')
         .then(data => dispatch({
             type: ACTIONTYPES.GET_FULL_CATALOG,
             payload: data.data
-        })).catch(err => console.log(err))
-    axios.get('/api/blog/catalog/names_only/')
+        }))
+        .catch(err => console.log(err))
+}
+
+export const getComments = blogName => dispatch => {
+    axios.get(`/api/blog/blog/${blogName}/get_by_name/`)
         .then(data => dispatch({
-            type: ACTIONTYPES.GET_CATALOG,
-            payload: data.data
-        })).catch(err => console.log(err))
+            type: ACTIONTYPES.GET_COMMENTS,
+            payload: data.data.get_comments
+        }))
+        .catch(err => console.log(err))
 }

@@ -31,8 +31,14 @@ class AccountSerializer(serializers.ModelSerializer):
         read_only_fields = ("get_message_count",)
 
     def create(self, validated_data, *args, **kwargs):
+        message = Message(
+            HTMLText="Приветствуем вас на нашем сайте.",
+            title="Приветствие",
+            sender=Account.objects.first(),
+        )
+        message.save()
         user = Account.objects.create_user(**validated_data)
-        user.received_messages.add(Message.objects.first())
+        user.received_messages.add(message)
         user.save()
         return user
 

@@ -3,8 +3,8 @@ from django.conf import settings
 
 
 class Message(models.Model):
-    text = models.TextField()
-    HTMLText = models.TextField()
+    title = models.CharField(max_length=100, blank=True, null=True)
+    HTMLText = models.TextField(blank=True, null=True)
     sender = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -16,6 +16,10 @@ class Message(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     is_received = models.BooleanField(default=False)
+
+    @property
+    def get_sender_name(self):
+        return self.sender.username
 
     @property
     def get_unreaded_messages_count(self):

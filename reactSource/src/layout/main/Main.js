@@ -1,20 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
+import GetCatalog from './GetCatalog'
 
 function Main(props) {
     return (
         <div className='container mt-4'>
-            {/* <ul className='list-group list-group-flush'>
-                {props.fullCatalog.map((cat, i) => <li className='list-group-item' key={i}><Link to={cat.name}>{cat.title}</Link></li>)}
-            </ul> */}
+            {props.fullCatalog.child ? <GetCatalog catalog={props.fullCatalog} /> : ""}
         </div>
     )
 }
 
 const mapStateToPros = state => ({
     fullCatalog: state.catalog.fullCatalog,
-    catalog: state.catalog.catalog,
 })
 
 export default connect(mapStateToPros, null)(withRouter(Main))

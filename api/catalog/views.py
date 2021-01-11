@@ -30,6 +30,9 @@ class CatalogViewSet(viewsets.ModelViewSet):
         methods=["GET"],
     )
     def get_by_name(self, request, pk=None, *args, **kwargs):
-        instance = get_object_or_404(klass=Catalog, pk=pk)
+        instance = get_object_or_404(klass=Catalog, name=pk)
         serializer = self.get_serializer(instance)
-        return response.Response(serializer.data)
+        context = serializer.data
+        context["get_child"] = instance.get_child
+        context["get_parent"] = instance.get_parent
+        return response.Response(context)

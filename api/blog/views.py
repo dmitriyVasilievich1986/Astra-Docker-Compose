@@ -2,6 +2,7 @@ from rest_framework import viewsets, response, decorators, permissions
 from api.support_class import ReadOnlyOrAdmin
 from .serializer import BlogSerializer
 from .models import Blog
+from django.shortcuts import get_object_or_404
 
 
 class BlogViewSet(viewsets.ModelViewSet):
@@ -24,7 +25,7 @@ class BlogViewSet(viewsets.ModelViewSet):
         permission_classes=[permissions.IsAuthenticated],
     )
     def likes(self, request, pk=None, *args, **kwargs):
-        instance = self.get_object()
+        instance = get_object_or_404(klass=Blog, name=pk)
 
         is_liked = request.user in instance.likes.all()
         if is_liked:
@@ -36,4 +37,17 @@ class BlogViewSet(viewsets.ModelViewSet):
             "likes": instance.get_likes_count,
             "is_liked": not is_liked,
         }
+        return response.Response(context)
+
+    @decorators.action(
+        detail=True,
+        methods=["GET"],
+    )
+    def get_by_name(self, request, pk=None, *args, **kwargs):
+        instance = get_object_or_404(klass=Blog, name=pk)
+        serializer = self.get_serializer(instance)
+        context = serializer.data
+        context["is_liked"] = request.user in instance.likes.all()
+        context["get_comments"] = instance.get_comments
+        context["get_parent"] = instance.get_parent
         return response.Response(context)

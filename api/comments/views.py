@@ -9,6 +9,9 @@ from rest_framework import (
 from .serializer import CommentsSerializer
 from api.support_class import ReadOnlyOrAdmin
 from .models import Comments
+from message.models import Message
+from django.shortcuts import get_object_or_404
+from account.models import Account
 
 
 class CommentsViewSet(viewsets.ModelViewSet):
@@ -17,13 +20,34 @@ class CommentsViewSet(viewsets.ModelViewSet):
     queryset = Comments.objects.all()
 
     def create(self, request, *args, **kwargs):
-        request.data["user"] = request.user
+        request.data["user"] = request.user.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+        user = Account.objects.first()
+        if "parent" in request.data:
+            comment = get_object_or_404(Comments, pk=request.data["parent"])
+            parent = comment.user
+            message = Message(
+                sender=user,
+                title=f"Пользователь {request.user.username} ответил на ваш комментарий",
+                HTMLText=f'Пользователь {request.user.username} ответил на ваш комментарий.<br/><a href="/blog/{request.data["blog"]}/">Ссылка на комментарий</a>',
+            )
+            message.save()
+            parent.received_messages.add(message)
+            parent.save()
+        message2 = Message(
+            sender=user,
+            title=f"Пользователь {request.user.username} ответил на ваш комментарий",
+            HTMLText=f'Пользователь {request.user.username} ответил на ваш комментарий.<br/><a href="/blog/{request.data["blog"]}/">Ссылка на комментарий</a>',
+        )
+        message2.save()
+        user.received_messages.add(message2)
+        user.save()
+        context = {"user": request.user.username, "text": request.data["text"]}
         headers = self.get_success_headers(serializer.data)
         return response.Response(
-            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+            context, status=status.HTTP_201_CREATED, headers=headers
         )
 
     def destroy(self, request, *args, **kwargs):

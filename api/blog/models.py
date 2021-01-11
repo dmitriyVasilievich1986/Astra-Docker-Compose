@@ -16,11 +16,13 @@ class Blog(models.Model):
 
     @property
     def get_parent(self):
-        return {
-            "name": self.name,
-            "title": self.title,
-            "parent": self.catalog.get_parent,
-        }
+        output = [
+            {
+                "name": self.name,
+                "title": self.title,
+            }
+        ] + self.catalog.get_parent
+        return output
 
     @property
     def get_comments(self):
