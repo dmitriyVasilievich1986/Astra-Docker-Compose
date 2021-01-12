@@ -66,10 +66,6 @@ class Blog extends Component {
                 <GetBreadCumber parent={this.state.blog.get_parent} />
                 <BlogMain HTMLText={this.state.blog.HTMLText} />
                 <div className='container'>
-                    {/* <div style={{ marginTop: "4rem" }}></div>
-                    <div dangerouslySetInnerHTML={{ __html: this.state.blog.HTMLText }} />
-                    <div style={{ marginTop: "4rem" }} className="border-top border-solid mb-4"></div> */}
-
                     <Badge badgeContent={this.state.likesCount} color="primary">
                         <h5 className='mr-2'>Понравилось? Ставь:</h5>
                         {this.state.isLiked ? <FavoriteIcon onClick={this.likeClickHandler.bind(this)} style={{ color: "red", cursor: "pointer" }} /> : <FavoriteBorderIcon onClick={this.likeClickHandler.bind(this)} style={{ cursor: "pointer" }} />}

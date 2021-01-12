@@ -178,6 +178,7 @@ class Test extends Component {
                 </div>
                 <div dangerouslySetInnerHTML={{ __html: this.state.HTMLString }}>
                 </div>
+                <div className="mt-4 mb-4" />
             </div>
         )
     }
