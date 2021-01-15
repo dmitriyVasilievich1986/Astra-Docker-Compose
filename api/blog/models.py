@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from catalog.models import Catalog
 
 
 class Blog(models.Model):
@@ -9,6 +10,13 @@ class Blog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    catalog = models.ForeignKey(
+        to=Catalog,
+        related_name="blog",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
 
     @property
     def get_likes_count(self):

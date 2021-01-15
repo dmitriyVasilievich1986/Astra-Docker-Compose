@@ -1,5 +1,4 @@
 from django.db import models
-from blog.models import Blog
 
 
 class Catalog(models.Model):
@@ -9,13 +8,6 @@ class Catalog(models.Model):
         to="self",
         on_delete=models.CASCADE,
         related_name="child",
-        blank=True,
-        null=True,
-    )
-    blog = models.OneToOneField(
-        to=Blog,
-        on_delete=models.CASCADE,
-        related_name="catalog",
         blank=True,
         null=True,
     )

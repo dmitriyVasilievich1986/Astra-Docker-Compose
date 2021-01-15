@@ -36,8 +36,10 @@ class Blog extends Component {
             .catch(() => this.setState({ isLoading: false }))
     }
     likeClickHandler() {
-        if (!this.props.token)
+        if (!this.props.token) {
             this.props.setModalStatus(true)
+            return
+        }
 
         axios.post(`/api/blog/blog/${this.props.match.params.blogName}/likes/`, null, getHeaders(this.props.token))
             .then(data => this.setState({

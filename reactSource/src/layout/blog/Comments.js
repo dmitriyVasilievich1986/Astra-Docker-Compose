@@ -1,14 +1,13 @@
+import getHeaders from '../support/getHeaders'
 import React, { Component } from 'react'
+import axios from 'axios';
+
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { connect } from 'react-redux'
-import { setModalStatus, getComments } from '../../actions/actions'
-import axios from 'axios';
-import getHeaders from '../support/getHeaders'
 
 const answerMessage = "Прокомментировать сообщение"
-const updateMessage = "Откорректировать сообщение"
+const updateMessage = "Изменить сообщение"
 
 class Comments extends Component {
     constructor(props) {
