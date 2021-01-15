@@ -15,11 +15,10 @@ class Catalog(models.Model):
     @property
     def get_child(self):
         if self.child.all().count() == 0:
-            blog_data = {
-                "name": self.blog.name if self.blog else "",
-                "title": self.blog.title if self.blog else "",
-            }
-            return {"name": self.name, "title": self.title, "blog": blog_data}
+            blogs_data = list()
+            for x in self.blog.all():
+                blogs_data.append({"name": x.name, "title": x.title})
+            return {"name": self.name, "title": self.title, "blog": blogs_data}
         output = {"name": self.name, "title": self.title, "child": list()}
         for child in self.child.all():
             output["child"].append(child.get_child)
