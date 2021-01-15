@@ -27,7 +27,7 @@ class Catalog(models.Model):
     @property
     def get_parent(self):
         if self.parent is None:
-            return {"name": self.name, "title": self.title}
+            return [{"name": self.name, "title": self.title}]
         output = [
             {
                 "name": self.name,
