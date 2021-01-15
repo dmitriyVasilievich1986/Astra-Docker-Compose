@@ -33,6 +33,5 @@ class Catalog(models.Model):
                 "name": self.name,
                 "title": self.title,
             }
-        ]
-        output.append(self.parent.get_parent)
+        ] + self.parent.get_parent
         return output
