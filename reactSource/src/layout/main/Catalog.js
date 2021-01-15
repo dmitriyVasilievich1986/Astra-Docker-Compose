@@ -18,6 +18,11 @@ class Catalog extends Component {
             .then(data => this.setState({ catalog: data.data, isLoading: false }))
             .catch(() => this.setState({ isLoading: false }))
     }
+    componentWillReceiveProps() {
+        axios.get(`/api/blog/catalog/${this.props.match.params.catalogName}/get_by_name/`)
+            .then(data => this.setState({ catalog: data.data, isLoading: false }))
+            .catch(() => this.setState({ isLoading: false }))
+    }
     render() {
         if (this.state.isLoading)
             return ""

@@ -8,9 +8,9 @@ function GetBreadCumber(props) {
                 {props.parent.slice(1).reverse().map((c, i) => {
                     return (
                         <li key={i} className="breadcrumb-item">
-                            <a href={c.name == "" ? "/" : `/catalog/${c.name}/`}>
+                            <Link to={c.name == "" ? "/" : `/catalog/${c.name}/`}>
                                 {c.title}
-                            </a>
+                            </Link>
                         </li>
                     )
                 })}
