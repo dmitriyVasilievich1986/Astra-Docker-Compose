@@ -1,4 +1,5 @@
 .vscode
+dbdata
 node_modules
 env_data
 example.html
